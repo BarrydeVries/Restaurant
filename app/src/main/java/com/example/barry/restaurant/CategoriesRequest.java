@@ -2,6 +2,7 @@ package com.example.barry.restaurant;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,13 +29,13 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
     private final String URL_CATAGORIES = "https://resto.mprog.nl/categories";
 
     private Context globalContext;
-    private Callback gloabalActivity;
+    private Callback globalActivity;
 
 
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        gloabalActivity.gotCategoriesError(error.getMessage());
+        globalActivity.gotCategoriesError(error.getMessage());
     }
 
     @Override
@@ -48,12 +49,15 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
             }
 
             // give the result back to the callback activity
-            gloabalActivity.gotCategories(categories);
+            globalActivity.gotCategories(categories);
         } catch (JSONException e) {
             Log.e("MYAPP", "unexpected JSON exception", e);
-            // Do something to recover ... or kill the app.
-        }
 
+            String message = "Something went wrong";
+            int duration = Toast.LENGTH_SHORT;
+            Toast.makeText(globalContext, message, duration).show();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
     }
 
     public CategoriesRequest(Context context) {
@@ -61,7 +65,7 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
     }
 
     public void getCategories(Callback activity){
-        gloabalActivity = activity;
+        globalActivity = activity;
         // get the categories from the api as a json
         RequestQueue queue = Volley.newRequestQueue(globalContext);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(URL_CATAGORIES,
