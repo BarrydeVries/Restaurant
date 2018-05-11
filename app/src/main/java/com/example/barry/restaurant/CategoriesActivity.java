@@ -28,17 +28,20 @@ public class CategoriesActivity extends AppCompatActivity implements CategoriesR
     public void gotCategories(ArrayList<String> categories) {
         ListView lv = findViewById(R.id.menuItems);
 
+        // set up adapter to fill the category list
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,
                 categories);
         lv.setAdapter(arrayAdapter);
 
+
+        // set up on click for the categories
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(CategoriesActivity.this, MenuActivity.class);
-                String categorie = (String) parent.getItemAtPosition(position);
-                intent.putExtra("categorie", categorie);
+                String category = (String) parent.getItemAtPosition(position);
+                intent.putExtra("category", category);
                 startActivity(intent);
             }
         });

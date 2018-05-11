@@ -17,13 +17,13 @@ import java.util.ArrayList;
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_menu);
-            Intent intent = getIntent();
 
-            String categorie = (String) intent.getSerializableExtra("categorie");
+            Intent intent = getIntent();
+            String category = (String) intent.getSerializableExtra("category");
 
             // create a request to get the menu's
             MenuRequest request = new MenuRequest(MenuActivity.this);
-            request.getMenu(this, categorie);
+            request.getMenu(this, category);
         }
 
 
@@ -39,7 +39,7 @@ import java.util.ArrayList;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // do something smart here.
+                // store values to show later
                 MenuItem menuItem = finalMenu.get(position);
                 Intent intent = new Intent(MenuActivity.this, MenuItemActivity.class);
                 intent.putExtra("description", menuItem.getDescription());

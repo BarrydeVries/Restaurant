@@ -26,8 +26,8 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
         void gotCategoriesError(String message);
     }
 
+    // global variables
     private final String URL_CATAGORIES = "https://resto.mprog.nl/categories";
-
     private Context globalContext;
     private Callback globalActivity;
 
@@ -42,6 +42,7 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
     public void onResponse(JSONObject response) {
 
         try {
+            // retrieve data from JSON
             JSONArray categoriesArray = response.getJSONArray("categories");
             ArrayList categories = new ArrayList<String>();
             for (int i = 0; i < categoriesArray.length(); i++) {
@@ -51,6 +52,7 @@ public class CategoriesRequest implements Response.Listener<JSONObject> , Respon
             // give the result back to the callback activity
             globalActivity.gotCategories(categories);
         } catch (JSONException e) {
+            // catch and log JSON exceptions
             Log.e("MYAPP", "unexpected JSON exception", e);
 
             String message = "Something went wrong";

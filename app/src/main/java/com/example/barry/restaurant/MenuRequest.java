@@ -25,7 +25,7 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
     private final String URL_MENU = "https://resto.mprog.nl/menu";
     private Context globalContext;
     private Callback globalActivity;
-    private String globalCategorie;
+    private String globalCategory;
 
     @Override
     public void onErrorResponse(VolleyError error) {
@@ -36,10 +36,11 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
     public void onResponse(JSONObject response) {
 
         try {
+            // make an array list and fill it with menuItem instances
             JSONArray menuArray = response.getJSONArray("items");
             ArrayList menu = new ArrayList<MenuItem>();
             for (int i = 0; i < menuArray.length();i++) {
-                if (menuArray.getJSONObject(i).getString("category").equals(globalCategorie)) {
+                if (menuArray.getJSONObject(i).getString("category").equals(globalCategory)) {
                     // create a new menu item, fill it and add it to list
                     MenuItem menuItem = new MenuItem();
                     menuItem.setName(menuArray.getJSONObject(i).getString("name"));
@@ -54,6 +55,7 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
             // give the result back to the callback activity
             globalActivity.gotMenu(menu);
         } catch (JSONException e) {
+            // catch and log JSON exceptions
             Log.e("MYAPP", "unexpected JSON exception", e);
             String message = "Something went wrong";
             int duration = Toast.LENGTH_SHORT;
@@ -66,9 +68,10 @@ public class MenuRequest implements Response.Listener<JSONObject>, Response.Erro
         globalContext = context;
     }
 
-    public void getMenu(Callback activity, String categorie){
+    public void getMenu(Callback activity, String category){
         globalActivity = activity;
-        globalCategorie = categorie;
+        globalCategory = category;
+
         // get the menu from the api as a json
         RequestQueue queue = Volley.newRequestQueue(globalContext);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(URL_MENU,
